@@ -1,0 +1,42 @@
+module demo-testframes {
+  yang-version 1.1;
+  namespace "urn:demo:params:xml:ns:yang:demo-testframes";
+  prefix dt;
+
+  import ietf-interfaces {
+    prefix if;
+  }
+  import ietf-yang-types {
+    prefix yang;
+  }
+
+  organization
+    "Lightside Instruments AS";
+  description
+    "This module demonstrates how standard models can be
+     augmented with custom data nodes.
+
+     In this demo /interfaces-state/interface/statistics is augmented
+     with a counter of proprietary testframes.";
+
+  revision 2020-08-04 {
+    description
+      "Initial revision.";
+  }
+
+  feature testframe-counter {
+    description
+      "The device can count testframes.";
+  }
+
+  augment "/if:interfaces-state/if:interface/if:statistics" {
+    if-feature "testframe-counter";
+    description
+      "Counters implemented by ports with analyzers.";
+    leaf in-testframe-pkts {
+      type yang:counter64;
+      description
+        "Testframe packets recognized by the traffic analyzer.";
+    }
+  }
+}
